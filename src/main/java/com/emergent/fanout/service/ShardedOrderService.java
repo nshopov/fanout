@@ -1,5 +1,6 @@
 package com.emergent.fanout.service;
 
+import com.emergent.fanout.dto.OrderRequest;
 import com.emergent.fanout.entity.Order;
 import com.emergent.fanout.repositories.shardAlpha.OrderRepositoryShardAlpha;
 import com.emergent.fanout.repositories.shardBeta.OrderRepositoryShardBeta;
@@ -24,6 +25,20 @@ public class ShardedOrderService {
         this.repoAlpha = repoAlpha;
         this.repoBeta = repoBeta;
         this.repoGamma = repoGamma;
+    }
+
+    public void createOrder(OrderRequest orderRequest) {
+        Order order = new Order(orderRequest.getId(),
+                                orderRequest.getCustomerCountry(),
+                                orderRequest.getAmount());
+
+        int shardIdex = Math.toIntExact(orderRequest.getId() % 3);
+
+        switch (shardIdex) {
+            case 0 -> repoAlpha.save(order);
+            case 1 -> repoBeta.save(order);
+            case 2 -> repoGamma.save(order);
+        }
     }
 
     public List<Order> fetchHighValueGermanOrders() {
