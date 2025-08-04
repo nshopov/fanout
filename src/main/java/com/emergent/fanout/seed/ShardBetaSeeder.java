@@ -3,7 +3,6 @@ package com.emergent.fanout.seed;
 import com.emergent.fanout.entity.Order;
 import com.emergent.fanout.repositories.shardBeta.OrderRepositoryShardBeta;
 import jakarta.annotation.PostConstruct;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Component;
 
 @Component
