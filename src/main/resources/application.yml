@@ -3,19 +3,20 @@ spring:
     console:
       enabled: true
       path: /h2-console
+app:
   datasource:
-    shard1:
-      url: jdbc:h2:mem:shard1;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-      driver-class-name: org.h2.Driver
+    shard-alpha:
+      jdbc-url: jdbc:h2:mem:shard-alpha;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
       username: sa
       password:
-    shard2:
-      url: jdbc:h2:mem:shard2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
       driver-class-name: org.h2.Driver
+    shard-beta:
+      jdbc-url: jdbc:h2:mem:shard-beta;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
       username: sa
       password:
-    shard3:
-      url: jdbc:h2:mem:shard3;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
       driver-class-name: org.h2.Driver
+    shard-gamma:
+      jdbc-url: jdbc:h2:mem:shard-gamma;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
       username: sa
       password:
+      driver-class-name: org.h2.Driver
