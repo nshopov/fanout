@@ -1,0 +1,17 @@
+app:
+  datasource:
+    shard-alpha:
+      jdbc-url: jdbc:postgresql://localhost:5432/shard_alpha
+      username: ${SHARD_DB_USERNAME}
+      password: ${SHARD_DB_PASSWORD}
+      schema: public
+    shard-beta:
+      jdbc-url: jdbc:postgresql://localhost:5432/shard_beta
+      username: ${SHARD_DB_USERNAME}
+      password: ${SHARD_DB_PASSWORD}
+      schema: public
+    shard-gamma:
+      jdbc-url: jdbc:postgresql://localhost:5432/shard_gamma
+      username: ${SHARD_DB_USERNAME}
+      password: ${SHARD_DB_PASSWORD}
+      schema: public

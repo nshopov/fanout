@@ -7,6 +7,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -46,24 +47,20 @@ public class ShardDataSourceConfig {
             entityManagerFactoryRef = "shardAlphaEntytyManager",
             transactionManagerRef = "shardAlphaTransactionManager"
     )
-    static class ShardAlphaConfig {
-        @Bean
-        public LocalContainerEntityManagerFactoryBean shardAlphaEntytyManager(@Qualifier("shardAlphaDataSource") DataSource dataSource) {
-            LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-            em.setDataSource(dataSource);
-            em.setPackagesToScan("com.emergent.fanout.entity");
-            em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+    static class ShardAlphaConfig extends AbstractShardJpaConfig {
 
-            Map<String, Object> jpaProperties = new HashMap<>();
-            jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-            jpaProperties.put("hibernate.hbm2ddl.auto", "update");
-            em.setJpaPropertyMap(jpaProperties);
-            return em;
+        @Bean
+        public LocalContainerEntityManagerFactoryBean shardAlphaEntytyManager(
+                @Qualifier("shardAlphaDataSource") DataSource dataSource,
+                Environment environment
+        ) {
+            return buildEntityManagerFactory("com.emergent.fanout.entity", dataSource, environment);
         }
 
         @Bean
-        public PlatformTransactionManager shardAlphaTransactionManager(@Qualifier("shardAlphaEntytyManager")EntityManagerFactory emf){
-            return new JpaTransactionManager(emf);
+        public JpaTransactionManager shardAlphaTransactionManager(
+                @Qualifier("shardAlphaEntytyManager") EntityManagerFactory emf) {
+            return buildTransactionManager(emf);
         }
     }
 
@@ -74,25 +71,15 @@ public class ShardDataSourceConfig {
             entityManagerFactoryRef = "shardBetaEntityManager",
             transactionManagerRef = "shardBetaTransactionManager"
     )
-    static class ShardBetaConfig {
+    static class ShardBetaConfig extends AbstractShardJpaConfig {
         @Bean
-        public LocalContainerEntityManagerFactoryBean shardBetaEntityManager(@Qualifier("shardBetaDataSource") DataSource dataSource) {
-            LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-            em.setDataSource(dataSource);
-            em.setPackagesToScan("com.emergent.fanout.entity");
-            em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-
-            Map<String, Object> jpaProperties = new HashMap<>();
-            jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-            jpaProperties.put("hibernate.hbm2ddl.auto", "update");
-            em.setJpaPropertyMap(jpaProperties);
-
-            return em;
+        public LocalContainerEntityManagerFactoryBean shardBetaEntityManager(@Qualifier("shardBetaDataSource") DataSource dataSource, Environment environment) {
+            return buildEntityManagerFactory("com.emergent.fanout.entity", dataSource, environment);
         }
 
         @Bean
         public PlatformTransactionManager shardBetaTransactionManager(@Qualifier("shardBetaEntityManager") EntityManagerFactory emf) {
-            return new JpaTransactionManager(emf);
+            return buildTransactionManager(emf);
         }
     }
 
@@ -103,25 +90,15 @@ public class ShardDataSourceConfig {
             entityManagerFactoryRef = "shardGammaEntityManager",
             transactionManagerRef = "shardGammaTransactionManager"
     )
-    static class ShardGammaConfig{
+    static class ShardGammaConfig extends AbstractShardJpaConfig {
         @Bean
-        public LocalContainerEntityManagerFactoryBean shardGammaEntityManager(@Qualifier("shardGammaDataSource") DataSource dataSource){
-            LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-            em.setDataSource(dataSource);
-            em.setPackagesToScan("com.emergent.fanout.entity");
-            em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-
-            Map<String, Object> jpaProperties = new HashMap<>();
-            jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-            jpaProperties.put("hibernate.hbm2ddl.auto", "update");
-            em.setJpaPropertyMap(jpaProperties);
-
-            return em;
+        public LocalContainerEntityManagerFactoryBean shardGammaEntityManager(@Qualifier("shardGammaDataSource") DataSource dataSource, Environment environment){
+            return buildEntityManagerFactory("com.emergent.fanout.entity", dataSource, environment);
         }
 
         @Bean
         public PlatformTransactionManager shardGammaTransactionManager(@Qualifier("shardGammaEntityManager") EntityManagerFactory emf) {
-            return new JpaTransactionManager(emf);
+            return buildTransactionManager(emf);
         }
     }
 }

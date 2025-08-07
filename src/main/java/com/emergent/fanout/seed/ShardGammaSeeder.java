@@ -16,8 +16,12 @@ public class ShardGammaSeeder {
 
     @PostConstruct
     public void seed() {
+        System.out.println("🔄 Seeding shard_gamma...");
+        repository.deleteAll();
+
         this.repository.save(new Order(8L, "DE", 1300.0));
         this.repository.save(new Order(9L, "IT", 300.0));
         this.repository.save(new Order(10L, "DE", 1900.0));
+        System.out.println("Seeding shard_gamma done...");
     }
 }

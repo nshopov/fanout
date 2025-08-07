@@ -15,8 +15,12 @@ public class ShardBetaSeeder {
 
     @PostConstruct
     public void seed(){
+        System.out.println("🔄 Seeding shard_beta...");
+        repository.deleteAll();
+
         this.repository.save(new Order(5L, "DE", 1800.0));
         this.repository.save(new Order(6L, "UK", 230.0));
         this.repository.save(new Order(7L, "DE", 2800.0));
+        System.out.println("Seeding shard_beta done.");
     }
 }

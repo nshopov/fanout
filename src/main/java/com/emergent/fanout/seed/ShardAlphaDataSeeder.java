@@ -16,9 +16,13 @@ public class ShardAlphaDataSeeder {
 
     @PostConstruct
     public void seed(){
+        System.out.println("Seeding shard_alpha");
+        repository.deleteAll();
+
         repository.save(new Order(1L, "DE", 1500.0));
         repository.save(new Order(2L, "FR", 900.0));
         repository.save(new Order(3L, "GB", 665.0));
         repository.save(new Order(4L, "DE", 2500.0));
+        System.out.println("seeding completed");
     }
 }
