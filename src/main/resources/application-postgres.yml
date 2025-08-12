@@ -1,17 +1,20 @@
+# application-postgres.yml
 app:
   datasource:
     shard-alpha:
-      jdbc-url: jdbc:postgresql://localhost:5432/shard_alpha
+      jdbcUrl: jdbc:postgresql://${SHARD_ALPHA_HOST:localhost}:5432/shard_alpha
       username: ${SHARD_DB_USERNAME}
       password: ${SHARD_DB_PASSWORD}
-      schema: public
+      driverClassName: org.postgresql.Driver
+
     shard-beta:
-      jdbc-url: jdbc:postgresql://localhost:5432/shard_beta
+      jdbcUrl: jdbc:postgresql://${SHARD_BETA_HOST:localhost}:5432/shard_beta
       username: ${SHARD_DB_USERNAME}
       password: ${SHARD_DB_PASSWORD}
-      schema: public
+      driverClassName: org.postgresql.Driver
+
     shard-gamma:
-      jdbc-url: jdbc:postgresql://localhost:5432/shard_gamma
+      jdbcUrl: jdbc:postgresql://${SHARD_GAMMA_HOST:localhost}:5432/shard_gamma
       username: ${SHARD_DB_USERNAME}
       password: ${SHARD_DB_PASSWORD}
-      schema: public
+      driverClassName: org.postgresql.Driver

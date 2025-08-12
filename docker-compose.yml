@@ -1,0 +1,58 @@
+services:
+  shard_alpha:
+    image: postgres:14
+    container_name: shard_alpha
+    environment:
+      POSTGRES_DB: shard_alpha
+      POSTGRES_USER: shard_user
+      POSTGRES_PASSWORD: shard_password
+    ports:
+      - "5433:5432"  # avoid conflicts with local PostgreSQL
+    networks:
+      - shard_net
+
+  shard_beta:
+    image: postgres:14
+    container_name: shard_beta
+    environment:
+      POSTGRES_DB: shard_beta
+      POSTGRES_USER: shard_user
+      POSTGRES_PASSWORD: shard_password
+    ports:
+      - "5434:5432"
+    networks:
+      - shard_net
+
+  shard_gamma:
+    image: postgres:14
+    container_name: shard_gamma
+    environment:
+      POSTGRES_DB: shard_gamma
+      POSTGRES_USER: shard_user
+      POSTGRES_PASSWORD: shard_password
+    ports:
+      - "5435:5432"
+    networks:
+      - shard_net
+  app:
+    build: .
+    command: ["java", "-jar", "app.jar"]
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      SHARD_DB_USERNAME: shard_user
+      SHARD_DB_PASSWORD: shard_password
+      SHARD_ALPHA_HOST: shard_alpha
+      SHARD_BETA_HOST: shard_beta
+      SHARD_GAMMA_HOST: shard_gamma
+    container_name: fanout_app
+    depends_on:
+      - shard_alpha
+      - shard_beta
+      - shard_gamma
+    ports:
+      - "8080:8080"
+    networks:
+      - shard_net
+networks:
+  shard_net:
+    driver: bridge
